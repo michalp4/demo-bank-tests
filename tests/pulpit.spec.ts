@@ -6,9 +6,11 @@ test.describe('Pulpit tests', () => {
     const url = 'https://demo-bank.vercel.app/';
     const userId = 'testerlo';
     const userPassword = '12345678';
+    
     await page.goto(url);
     await page.getByTestId('login-input').fill(userId);
     await page.getByTestId('password-input').fill(userPassword);
+    await page.getByTestId('login-button').click();
   });
 
   test('quick payment with correct data', async ({ page }) => {
@@ -19,8 +21,6 @@ test.describe('Pulpit tests', () => {
     const expectedTransferReciever = 'Chuck Demobankowy';
 
     // Act
-    await page.getByTestId('login-button').click();
-
     await page.waitForLoadState('domcontentloaded');
 
     await page.locator('#widget_1_transfer_receiver').selectOption(recieverId);
@@ -44,7 +44,6 @@ test.describe('Pulpit tests', () => {
     const expectedMessage = `Doładowanie wykonane!  ${topUpAmount},00PLN na numer ${topUpReciever}`;
 
     // Act
-    await page.getByTestId('login-button').click();
 
     await page.locator('#widget_1_topup_receiver').selectOption(topUpReciever);
 
