@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Pulpit tests', () => {
-  //test.describe.configure({ retries: 3 });
+  //test.describe.configure({ retries: 3 }); - powtarzanie testów - 3 razy w tym wypadku
   test.beforeEach(async ({ page }) => {
     const userId = 'testerlo';
     const userPassword = '12345678';
