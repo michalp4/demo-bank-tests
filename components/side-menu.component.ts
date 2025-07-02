@@ -1,10 +1,9 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page } from '@playwright/test';
 
 export class SideMenuComponent {
-    paymentButton: Locator;
-    
+  paymentButton: Locator;
+
   constructor(private page: Page) {
     this.paymentButton = this.page.getByRole('link', { name: 'płatności' });
   }
-  
 }
