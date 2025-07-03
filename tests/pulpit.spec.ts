@@ -18,55 +18,63 @@ test.describe('Pulpit tests', () => {
     pulpitPage = new PulpitPage(page);
   });
 
-  test('quick payment with correct data @pulpit @integration', async ({
-    page,
-  }) => {
-    // Arrange
-    const recieverId = '2';
-    const transferAmount = '150';
-    const transferTitle = 'pizza';
-    const expectedTransferReciever = 'Chuck Demobankowy';
+  test(
+    'quick payment with correct data',
+    { tag: ['@pulpit', '@integration'] },
+    async ({ page }) => {
+      // Arrange
+      const recieverId = '2';
+      const transferAmount = '150';
+      const transferTitle = 'pizza';
+      const expectedTransferReciever = 'Chuck Demobankowy';
 
-    // Act
-    await page.waitForLoadState('domcontentloaded');
-    await pulpitPage.executeQuickPayment(
-      recieverId,
-      transferAmount,
-      transferTitle,
-    );
+      // Act
+      await page.waitForLoadState('domcontentloaded');
+      await pulpitPage.executeQuickPayment(
+        recieverId,
+        transferAmount,
+        transferTitle,
+      );
 
-    // Assert
-    await expect(pulpitPage.messageText).toHaveText(
-      `Przelew wykonany! ${expectedTransferReciever} - ${transferAmount},00PLN - ${transferTitle}`,
-    );
-  });
+      // Assert
+      await expect(pulpitPage.messageText).toHaveText(
+        `Przelew wykonany! ${expectedTransferReciever} - ${transferAmount},00PLN - ${transferTitle}`,
+      );
+    },
+  );
 
-  test('successful mobile top-up @pulpit @integration', async ({ page }) => {
-    // Arrange
-    const topUpReciever = '500 xxx xxx';
-    const topUpAmount = '50';
-    const expectedMessage = `Doładowanie wykonane!  ${topUpAmount},00PLN na numer ${topUpReciever}`;
+  test(
+    'successful mobile top-up',
+    { tag: ['@pulpit', '@integration'] },
+    async ({ page }) => {
+      // Arrange
+      const topUpReciever = '500 xxx xxx';
+      const topUpAmount = '50';
+      const expectedMessage = `Doładowanie wykonane!  ${topUpAmount},00PLN na numer ${topUpReciever}`;
 
-    // Act
-    await pulpitPage.executeMobileTopUp(topUpReciever, topUpAmount);
+      // Act
+      await pulpitPage.executeMobileTopUp(topUpReciever, topUpAmount);
 
-    // Assert
-    await expect(page.locator('#show_messages')).toHaveText(expectedMessage);
-  });
+      // Assert
+      await expect(page.locator('#show_messages')).toHaveText(expectedMessage);
+    },
+  );
 
-  test('correct balance after successful mobile top-up @pulpit @integration', async ({
-    page,
-  }) => {
-    // Arrange
-    const topUpReciever = '500 xxx xxx';
-    const topUpAmount = '50';
-    const initialBalance = await page.locator('#money_value').innerText();
-    const expectedBalance = Number(initialBalance) - Number(topUpAmount);
+  test(
+    'correct balance after successful mobile top-up',
+    { tag: ['@pulpit', '@integration'] },
+    async ({ page }) => {
+      // Arrange
+      const topUpReciever = '500 xxx xxx';
+      const topUpAmount = '50';
+      const initialBalance = await page.locator('#money_value').innerText();
+      const expectedBalance = Number(initialBalance) - Number(topUpAmount);
 
-    // Act
-    await pulpitPage.executeMobileTopUp(topUpReciever, topUpAmount);
+      // Act
+      await pulpitPage.executeMobileTopUp(topUpReciever, topUpAmount);
 
-    // Assert
-    await expect(pulpitPage.moneyValueText).toHaveText(`${expectedBalance}`);
-  });
+      // Assert
+      await expect(pulpitPage.moneyValueText).toHaveText(`${expectedBalance}`);
+    },
+  );
 });
