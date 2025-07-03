@@ -27,12 +27,11 @@ test.describe('Pulpit tests', () => {
 
     // Act
     await page.waitForLoadState('domcontentloaded');
-    await pulpitPage.transferRecieverInput.selectOption(recieverId);
-    await pulpitPage.transferAmountInput.fill(transferAmount);
-    await pulpitPage.transferTitleInput.fill(transferTitle);
-
-    await pulpitPage.transferButton.click();
-    await pulpitPage.actionCloseButton.click();
+    await pulpitPage.executeQuickPayment(
+      recieverId,
+      transferAmount,
+      transferTitle,
+    );
 
     // Assert
     await expect(pulpitPage.messageText).toHaveText(
@@ -47,12 +46,7 @@ test.describe('Pulpit tests', () => {
     const expectedMessage = `Doładowanie wykonane!  ${topUpAmount},00PLN na numer ${topUpReciever}`;
 
     // Act
-    await pulpitPage.topupRecieverInput.selectOption(topUpReciever);
-
-    await pulpitPage.topupAmountInput.fill(topUpAmount);
-    await pulpitPage.topupAgreementCheckbox.click();
-    await pulpitPage.topupExecuteButton.click();
-    await pulpitPage.actionCloseButton.click();
+    await pulpitPage.executeMobileTopUp(topUpReciever, topUpAmount);
 
     // Assert
     await expect(page.locator('#show_messages')).toHaveText(expectedMessage);
@@ -66,12 +60,7 @@ test.describe('Pulpit tests', () => {
     const expectedBalance = Number(initialBalance) - Number(topUpAmount);
 
     // Act
-    await pulpitPage.topupRecieverInput.selectOption(topUpReciever);
-
-    await pulpitPage.topupAmountInput.fill(topUpAmount);
-    await pulpitPage.topupAgreementCheckbox.click();
-    await pulpitPage.topupExecuteButton.click();
-    await pulpitPage.actionCloseButton.click();
+    await pulpitPage.executeMobileTopUp(topUpReciever, topUpAmount);
 
     // Assert
     await expect(pulpitPage.moneyValueText).toHaveText(`${expectedBalance}`);

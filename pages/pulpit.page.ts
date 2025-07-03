@@ -40,4 +40,30 @@ export class PulpitPage {
     this.messageText = this.page.locator('#show_messages');
     this.moneyValueText = this.page.locator('#money_value');
   }
+
+  async executeQuickPayment(
+    recieverId: string,
+    transferAmount: string,
+    transferTitle: string,
+  ): Promise<void> {
+    await this.transferRecieverInput.selectOption(recieverId);
+    await this.transferAmountInput.fill(transferAmount);
+    await this.transferTitleInput.fill(transferTitle);
+
+    await this.transferButton.click();
+    await this.actionCloseButton.click();
+  }
+
+  async executeMobileTopUp(
+    topUpReciever: string,
+    topUpAmount: string,
+  ): Promise<void> {
+    await this.topupRecieverInput.selectOption(topUpReciever);
+
+    await this.topupAmountInput.fill(topUpAmount);
+    await this.topupAgreementCheckbox.click();
+    await this.topupExecuteButton.click();
+
+    await this.actionCloseButton.click();
+  }
 }
